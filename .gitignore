@@ -1,3 +1,4 @@
 data/
+*.pth
+*.h5
 env/
-TestDataset/

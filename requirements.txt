@@ -50,9 +50,11 @@ sympy==1.14.0
 threadpoolctl==3.6.0
 torch==2.9.1
 torchvision==0.24.1
-tornado @ file:///D:/bld/tornado_1762506734045/work
+tornado==6.5.2
 tqdm==4.67.1
-traitlets @ file:///home/conda/feedstock_root/build_artifacts/traitlets_1733367359838/work
-typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_typing_extensions_1756220668/work
-wcwidth @ file:///home/conda/feedstock_root/build_artifacts/wcwidth_1758622279606/work
-zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1749421620841/work
+traitlets==5.14.3
+triton==3.5.1
+typing_extensions==4.15.0
+tzdata==2025.2
+wcwidth==0.2.14
+widgetsnbextension==4.0.15

@@ -1,53 +1,62 @@
-import numpy as np
 import json
-from sklearn.metrics import (
-    accuracy_score,
-    f1_score,
-    precision_score,
-    recall_score,
-    confusion_matrix,
-)
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
 
-def compute_classification_metrics(y_true, y_pred, average="macro"):
+
+def compute_metrics(true_labels, pred_labels, average="macro"):
     """
-    Compute common classification metrics for classification tasks.
-
+    Compute standard classification metrics.
+    
     Args:
-        y_true (list or np.array): Ground truth labels
-        y_pred (list or np.array): Predicted labels
-        average (str): Averaging mode for multi-class classification.
-                       Options: "macro", "micro", "weighted"
-
+        true_labels (list or array): Ground truth label indices
+        pred_labels (list or array): Predicted label indices
+        average (str): F1 averaging method
+    
     Returns:
-        dict: Accuracy, F1, Precision, Recall, Confusion matrix
+        dict: accuracy, f1, and confusion matrix
     """
-    y_true = np.array(y_true)
-    y_pred = np.array(y_pred)
+    acc = accuracy_score(true_labels, pred_labels)
+    f1 = f1_score(true_labels, pred_labels, average=average)
+    cm = confusion_matrix(true_labels, pred_labels)
 
-    metrics = {
-        "accuracy": float(accuracy_score(y_true, y_pred)),
-        "f1": float(f1_score(y_true, y_pred, average=average, zero_division=0)),
-        "precision": float(precision_score(y_true, y_pred, average=average, zero_division=0)),
-        "recall": float(recall_score(y_true, y_pred, average=average, zero_division=0)),
+    return {
+        "accuracy": acc,
+        "f1_score": f1,
+        "confusion_matrix": cm.tolist()
     }
 
-    try:
-        cm = confusion_matrix(y_true, y_pred).tolist()
-    except Exception:
-        cm = None
 
-    metrics["confusion_matrix"] = cm
-
-    return metrics
-
-
-def save_metrics(metrics: dict, path: str):
+def save_metrics(metrics_dict, file_path):
     """
-    Save a dictionary of metrics to a JSON file.
-
+    Save metrics dictionary to a JSON file.
+    
     Args:
-        metrics (dict): metrics dictionary
-        path (str): output JSON file path
+        metrics_dict (dict): Metrics dictionary
+        file_path (str or Path): Output JSON path
     """
-    with open(path, "w") as f:
-        json.dump(metrics, f, indent=2)
+    with open(file_path, "w") as f:
+        json.dump(metrics_dict, f, indent=4)
+    print(f"Metrics saved to {file_path}")
+
+
+def load_metrics(file_path):
+    """
+    Load metrics dictionary from a JSON file.
+    
+    Args:
+        file_path (str or Path)
+    
+    Returns:
+        dict
+    """
+    with open(file_path, "r") as f:
+        return json.load(f)
+
+
+def print_metrics(metrics_dict):
+    """
+    Nicely print accuracy, F1, confusion matrix.
+    """
+    print("\n===== Metrics =====")
+    for key, value in metrics_dict.items():
+        print(f"{key}: {value}")
+    print("===================\n")
